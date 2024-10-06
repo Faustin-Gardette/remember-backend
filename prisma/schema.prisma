@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id     String @id @default(cuid())
+  email  String @unique
+  pseudo String
+}
+
+model Box {
+  id       String    @id @default(uuid())
+  name     String
+  sections Section[]
+}
+
+model Section {
+  id Int @id @default(autoincrement())
+
+  boxId String
+  box   Box    @relation(fields: [boxId], references: [id])
+
+  cards Card[]
+}
+
+model Card {
+  id Int @id @default(autoincrement())
+
+  recto String
+  verso String
+
+  categoryId    Int?
+  category      Category?    @relation(fields: [categoryId], references: [id])
+  subCategoryId Int?
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+  deckId        Int?
+  deck          Deck?        @relation(fields: [deckId], references: [id])
+  sectionId     Int?
+  section       Section?     @relation(fields: [sectionId], references: [id])
+}
+
+model Deck {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value String
+  Card  Card[]
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value String
+  Card  Card[]
+}
+
+model SubCategory {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value String
+  Card  Card[]
+}
