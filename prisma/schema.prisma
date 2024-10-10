@@ -14,9 +14,9 @@ datasource db {
 }
 
 model User {
-  id     String @id @default(cuid())
-  email  String @unique
-  pseudo String
+  id       String @id @default(cuid())
+  pseudo   String
+  password String
 }
 
 model Box {
