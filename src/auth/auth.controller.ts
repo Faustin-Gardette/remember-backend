@@ -4,7 +4,8 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { ReqWithUser } from './jwt.strategy';
 import { UserService } from 'src/user/user.service';
 
-export type AuthBody = { pseudo: string; password: string };
+export type AuthBody = { email: string; password: string };
+export type RegisterBody = { email: string; pseudo: string; password: string };
 
 @Controller('auth')
 export class AuthController {
@@ -16,6 +17,11 @@ export class AuthController {
   @Post('login')
   async login(@Body() authBody: AuthBody) {
     return this.authService.login(authBody);
+  }
+
+  @Post('register')
+  async register(@Body() registerBody: RegisterBody) {
+    return this.authService.register(registerBody);
   }
 
   @UseGuards(JwtAuthGuard)

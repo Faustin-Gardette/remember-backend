@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AuthBody } from './auth.controller';
+import { AuthBody, RegisterBody } from './auth.controller';
 import { PrismaService } from 'src/prisma.service';
 import { compare, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -12,9 +12,9 @@ export class AuthService {
   ) {}
 
   async login(authBody: AuthBody) {
-    const existingUser = await this.prisma.user.findFirst({
+    const existingUser = await this.prisma.user.findUnique({
       where: {
-        pseudo: authBody.pseudo,
+        email: authBody.email,
       },
     });
 
@@ -32,6 +32,30 @@ export class AuthService {
     }
 
     return this.authenticateUser(existingUser.id);
+  }
+
+  async register(registerBody: RegisterBody) {
+    const existingUser = await this.prisma.user.findUnique({
+      where: {
+        email: registerBody.email,
+      },
+    });
+
+    if (existingUser) {
+      throw new Error('Utilisateur déjà existant avec cet email.');
+    }
+
+    const hashedPassword = await this.hashPassword(registerBody.password);
+
+    const createdUser = await this.prisma.user.create({
+      data: {
+        email: registerBody.email,
+        pseudo: registerBody.pseudo,
+        password: hashedPassword,
+      },
+    });
+
+    return this.authenticateUser(createdUser.id);
   }
 
   //   private pour ne pas avoir accès à la fct dans le controller
