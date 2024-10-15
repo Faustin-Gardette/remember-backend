@@ -18,16 +18,30 @@ model User {
   email    String @unique
   pseudo   String
   password String
+
+  box          Box?
+  LearnSection LearnSection?
+  cards        Card[]
 }
 
 model Box {
-  id       String    @id @default(uuid())
+  id       String    @id @default(cuid())
   name     String
   sections Section[]
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Section {
-  id Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
+  name String
+
+  daysOfMonth     Int[] // Jours spécifiques du mois (1-31)
+  months          Int[] // Mois spécifiques de l'année (1-12)
+  daysOfWeek      Int[] // Jours spécifiques de la semaine (0-6, où 0 = dimanche)
+  intervalDays    Int? // Intervalle en jours pour les déclenchements récurrents
+  lastTriggeredAt DateTime?
 
   boxId String
   box   Box    @relation(fields: [boxId], references: [id])
@@ -41,33 +55,58 @@ model Card {
   recto String
   verso String
 
-  categoryId    Int?
-  category      Category?    @relation(fields: [categoryId], references: [id])
-  subCategoryId Int?
-  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
-  deckId        Int?
-  deck          Deck?        @relation(fields: [deckId], references: [id])
-  sectionId     Int?
-  section       Section?     @relation(fields: [sectionId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  sectionId Int?
+  section   Section? @relation(fields: [sectionId], references: [id])
+
+  learnSectionId Int?
+  learnSection   LearnSection? @relation(fields: [learnSectionId], references: [id])
 }
 
-model Deck {
-  id    Int    @id @default(autoincrement())
-  name  String
-  value String
-  Card  Card[]
+model LearnSection {
+  id Int @id @default(autoincrement())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  card Card[]
 }
 
-model Category {
-  id    Int    @id @default(autoincrement())
-  name  String
-  value String
-  Card  Card[]
-}
+// model Card {
+//   id Int @id @default(autoincrement())
 
-model SubCategory {
-  id    Int    @id @default(autoincrement())
-  name  String
-  value String
-  Card  Card[]
-}
+//   recto String
+//   verso String
+
+//   categoryId    Int?
+//   category      Category?    @relation(fields: [categoryId], references: [id])
+//   subCategoryId Int?
+//   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+//   deckId        Int?
+//   deck          Deck?        @relation(fields: [deckId], references: [id])
+//   sectionId     Int?
+//   section       Section?     @relation(fields: [sectionId], references: [id])
+// }
+
+// model Deck {
+//   id    Int    @id @default(autoincrement())
+//   name  String
+//   value String
+//   Card  Card[]
+// }
+
+// model Category {
+//   id    Int    @id @default(autoincrement())
+//   name  String
+//   value String
+//   Card  Card[]
+// }
+
+// model SubCategory {
+//   id    Int    @id @default(autoincrement())
+//   name  String
+//   value String
+//   Card  Card[]
+// }

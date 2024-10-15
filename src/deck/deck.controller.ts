@@ -5,8 +5,8 @@ import { DeckService } from './deck.service';
 export class DeckController {
   constructor(private readonly deckService: DeckService) {}
 
-  @Get()
-  getMyDecks() {
-    return this.deckService.getMyDecks();
-  }
+  // @Get()
+  // getMyDecks() {
+  //   return this.deckService.getMyDecks();
+  // }
 }

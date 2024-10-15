@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { AuthBody, RegisterBody } from './auth.controller';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { compare, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(authBody: AuthBody) {
+  async login(authBody: LoginUserDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: {
         email: authBody.email,
@@ -19,7 +20,7 @@ export class AuthService {
     });
 
     if (!existingUser) {
-      throw new Error('Utilisateur non trouvé');
+      throw new ConflictException('Utilisateur non trouvé');
     }
 
     const isValidPassword = await this.isValidPassword(
@@ -28,13 +29,13 @@ export class AuthService {
     );
 
     if (!isValidPassword) {
-      throw new Error('Le mot de passe est invalide.');
+      throw new ConflictException('Le mot de passe est invalide.');
     }
 
     return this.authenticateUser(existingUser.id);
   }
 
-  async register(registerBody: RegisterBody) {
+  async register(registerBody: CreateUserDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: {
         email: registerBody.email,
@@ -42,7 +43,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new Error('Utilisateur déjà existant avec cet email.');
+      throw new ConflictException('Utilisateur déjà existant avec cet email.');
     }
 
     const hashedPassword = await this.hashPassword(registerBody.password);
@@ -52,6 +53,39 @@ export class AuthService {
         email: registerBody.email,
         pseudo: registerBody.pseudo,
         password: hashedPassword,
+        LearnSection: {
+          create: {},
+        },
+        box: {
+          create: {
+            name: 'Ma boîte',
+            sections: {
+              create: [
+                {
+                  name: 'Section 1',
+                  daysOfMonth: [],
+                  months: [],
+                  daysOfWeek: [],
+                  intervalDays: null,
+                },
+                {
+                  name: 'Section 2',
+                  daysOfMonth: [],
+                  months: [],
+                  daysOfWeek: [],
+                  intervalDays: null,
+                },
+                {
+                  name: 'Section 3',
+                  daysOfMonth: [],
+                  months: [],
+                  daysOfWeek: [],
+                  intervalDays: null,
+                },
+              ],
+            },
+          },
+        },
       },
     });
 

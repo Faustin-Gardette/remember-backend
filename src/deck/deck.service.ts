@@ -5,8 +5,8 @@ import { PrismaService } from 'src/prisma.service';
 export class DeckService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getMyDecks() {
-    const mydecks = await this.prisma.deck.findMany();
-    return mydecks;
-  }
+  // async getMyDecks() {
+  //   const mydecks = await this.prisma.deck.findMany();
+  //   return mydecks;
+  // }
 }

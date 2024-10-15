@@ -10,8 +10,8 @@ export class BoxController {
     return this.boxService.getMyBoxes();
   }
 
-  @Post()
-  createBox(@Body() data: { name: string }) {
-    return this.boxService.createBox(data);
-  }
+  // @Post()
+  // createBox(@Body() data: { name: string }) {
+  //   return this.boxService.createBox(data);
+  // }
 }

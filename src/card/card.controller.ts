@@ -5,29 +5,33 @@ import { CardService } from './card.service';
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 
-  @Get('category')
-  getCategory() {
-    return this.cardService.getCategory();
-  }
-
-  @Get('sub-category')
-  getSubCategory() {
-    return this.cardService.getSubCategory();
+  @Get()
+  getCard() {
+    return this.cardService.getCard();
   }
 
   @Post('create')
   createCard(
     @Body()
     data: {
-      valueRecto: string;
-      valueVerso: string;
+      userId: string;
+      recto: string;
+      verso: string;
       nameDeck: string | null;
       nameCat: string | null;
       nameSub: string | null;
     },
   ) {
-    console.log(data);
-
     return this.cardService.createCard(data);
   }
+
+  // @Get('category')
+  // getCategory() {
+  //   return this.cardService.getCategory();
+  // }
+
+  // @Get('sub-category')
+  // getSubCategory() {
+  //   return this.cardService.getSubCategory();
+  // }
 }

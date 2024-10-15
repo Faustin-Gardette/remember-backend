@@ -10,11 +10,11 @@ export class BoxService {
     return myboxes;
   }
 
-  async createBox(data: { name: string }) {
-    await this.prisma.box.create({
-      data: {
-        name: data.name,
-      },
-    });
-  }
+  // async createBox(data: { name: string }) {
+  //   await this.prisma.box.create({
+  //     data: {
+  //       name: data.name,
+  //     },
+  //   });
+  // }
 }

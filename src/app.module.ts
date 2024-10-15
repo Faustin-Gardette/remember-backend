@@ -4,7 +4,6 @@ import { DeckModule } from './deck/deck.module';
 import { CardModule } from './card/card.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { AutController } from './aut/aut.controller';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -18,7 +17,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
   ],
-  controllers: [AutController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}
