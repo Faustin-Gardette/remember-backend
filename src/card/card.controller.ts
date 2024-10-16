@@ -1,5 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CardService } from './card.service';
+
+export type PushCard = {
+  cardId: string;
+  success: boolean;
+  sectionCardId: string | undefined;
+};
 
 @Controller('card')
 export class CardController {
@@ -8,6 +14,11 @@ export class CardController {
   @Get()
   getCard() {
     return this.cardService.getCard();
+  }
+
+  @Get('learn/:id')
+  getLearnSection(@Param('id') id: string) {
+    return this.cardService.getLearnSection(id);
   }
 
   @Post('create')
@@ -25,13 +36,8 @@ export class CardController {
     return this.cardService.createCard(data);
   }
 
-  // @Get('category')
-  // getCategory() {
-  //   return this.cardService.getCategory();
-  // }
-
-  // @Get('sub-category')
-  // getSubCategory() {
-  //   return this.cardService.getSubCategory();
-  // }
+  @Post('/section')
+  pushCardInSection(@Body() data: PushCard) {
+    return this.cardService.pushCardInSection(data);
+  }
 }

@@ -1,17 +1,12 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { BoxService } from './box.service';
 
 @Controller('box')
 export class BoxController {
   constructor(private readonly boxService: BoxService) {}
 
-  @Get()
-  getMyBoxes() {
-    return this.boxService.getMyBoxes();
+  @Get('/:userId')
+  getMyBoxe(@Param('userId') userId: string) {
+    return this.boxService.getMyBoxe(userId);
   }
-
-  // @Post()
-  // createBox(@Body() data: { name: string }) {
-  //   return this.boxService.createBox(data);
-  // }
 }

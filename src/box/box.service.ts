@@ -5,16 +5,16 @@ import { PrismaService } from 'src/prisma.service';
 export class BoxService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getMyBoxes() {
-    const myboxes = await this.prisma.box.findMany();
-    return myboxes;
+  async getMyBoxe(userId: string) {
+    return await this.prisma.box.findUnique({
+      where: {
+        userId,
+      },
+      include: {
+        sections: true,
+      },
+    });
   }
 
-  // async createBox(data: { name: string }) {
-  //   await this.prisma.box.create({
-  //     data: {
-  //       name: data.name,
-  //     },
-  //   });
-  // }
+ 
 }
