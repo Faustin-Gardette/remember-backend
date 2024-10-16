@@ -38,9 +38,9 @@ model Section {
   name     String
   position Int?
 
-  daysOfMonth     Int[] // Jours spécifiques du mois (1-31)
-  months          Int[] // Mois spécifiques de l'année (1-12)
-  daysOfWeek      Int[] // Jours spécifiques de la semaine (0-6, où 0 = dimanche)
+  daysOfMonth     Int[] // Jours  (1-31)
+  months          Int[] // Mois  (1-12)
+  daysOfWeek      Int[] // Jours  semaine (0-6, 0 = dimanche)
   intervalDays    Int? // Intervalle en jours pour les déclenchements récurrents
   lastTriggeredAt DateTime?
 

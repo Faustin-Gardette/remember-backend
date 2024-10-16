@@ -10,18 +10,6 @@ export class CardService {
     return await this.prisma.card.findMany();
   }
 
-  async getLearnSection(id: string) {
-    return await this.prisma.learnSection.findUnique({
-      where: {
-        userId: id,
-      },
-      select: {
-        id: true,
-        card: true,
-      },
-    });
-  }
-
   async createCard(data: {
     userId: string;
     recto: string;

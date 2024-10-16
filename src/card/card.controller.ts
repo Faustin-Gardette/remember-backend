@@ -16,11 +16,6 @@ export class CardController {
     return this.cardService.getCard();
   }
 
-  @Get('learn/:id')
-  getLearnSection(@Param('id') id: string) {
-    return this.cardService.getLearnSection(id);
-  }
-
   @Post('create')
   createCard(
     @Body()
